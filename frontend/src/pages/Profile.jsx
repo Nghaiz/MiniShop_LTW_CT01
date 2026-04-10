@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../App";
 
@@ -11,8 +11,13 @@ function Profile() {
   const cardClass =
     "rounded-2xl border border-zinc-200 bg-white p-6 transition-colors dark:border-zinc-700 dark:bg-zinc-800/70 sm:p-8";
 
+  const hasFetched = useRef(false);
+
   useEffect(() => {
     const fetchProfile = async () => {
+      if (hasFetched.current) return;
+      hasFetched.current = true;
+
       try {
         const res = await fetch("/api/profile");
         if (res.status === 401) {
