@@ -62,6 +62,10 @@ app.get("/api/profile", (req, res) => {
   });
 });
 app.get("/api/logout", (req, res) => {
+  if (!req.session.username){
+    return res.status(401).json({ error: "Chưa đăng nhập" });
+  }
+
   req.session.destroy((err) => {
     if (err) {
       return res.status(500).json({ error: "Không thể đăng xuất" });
